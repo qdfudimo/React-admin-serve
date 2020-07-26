@@ -4,8 +4,15 @@ const usersModel = require('../model/user.js');
 const setToken = require("../util/token_verify")
 let qs = require('qs')
 router.post('/', async ctx => {
-    console.log(ctx.request.body);
-    const { userName, passWord } = ctx.request.body;
+    const { userName, passWord, captcha } = ctx.request.body;
+    if (!(ctx.session && ctx.session.captcha == captcha)) {
+        ctx.body = {
+            status: 0,
+            msg: "验证码错误",
+            data: []
+        }
+        return
+    }
     // console.log(qs.stringify(ctx.request.body)); //userName=zs
     const res = await usersModel.findOne({ userName })
         //findOne 查找的是一个对象 查不到是null

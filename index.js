@@ -15,8 +15,13 @@ app.use(cors())
 const login = require("./router/login")
 const user = require("./router/user")
 const register = require("./router/register")
+const captcha = require("./router/captcha")
 const verToken = require("./util/token_verify")
-app.use(async (ctx, next) => {
+const session = require('koa-session');
+const session_config = require('./config/session');
+app.keys = ['some secret hurr'];
+app.use(session(session_config, app));
+app.use(async(ctx, next) => {
     if (ctx.header && ctx.header.authorization) {
         const data = ctx.header.authorization.split(" ");
         if (data.length != 2) {
@@ -36,7 +41,7 @@ app.use(async (ctx, next) => {
     }
 })
 
-app.use(async (ctx, next) => {
+app.use(async(ctx, next) => {
     return next().catch((err) => {
         if (401 == err.status) {
             /**
@@ -84,10 +89,12 @@ app.use(async (ctx, next) => {
 app.use(jwtKoa({
     secret: defined.secret
 }).unless({
-    path: [/^\/login/,/^\/register/]
+    path: [/^\/login/, /^\/register/, /^\/captcha/]
 }));
+// router.prefix('/api')
 router.use("/login", login)
 router.use("/user", user)
+router.use("/captcha", captcha)
 router.use("/register", register)
 app.use(router.routes()); //作用：启动路由
 app.use(router.allowedMethods());

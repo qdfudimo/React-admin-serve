@@ -3,9 +3,10 @@ const mongoose = require("mongoose")
 const DB_NAME = 'adminJs'
     // 定义数据库地址
 const DB_URL = '47.103.218.151:27017'
-    // 连接数据库
 module.exports = new Promise((resolve, reject) => {
-    // 连接数据库
+    /** 连接数据库
+     * root是adminJs
+     */
     mongoose.connect(`mongodb://root:root@${DB_URL}/${DB_NAME}`, {
             useNewUrlParser: true
         })
