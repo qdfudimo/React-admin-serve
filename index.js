@@ -1,6 +1,6 @@
 const koa = require('koa')
 const router = require('koa-router')()
-    // const db = require("./db/index")
+const db = require("./db/index")
 const bodyParser = require('koa-bodyparser')
 const Koa_Logger = require("koa-logger");
 const logger = Koa_Logger();
@@ -32,6 +32,9 @@ var storage = multer.diskStorage({
         },
         //修改文件名称
         filename: function(req, file, cb) {
+            console.log('====================================');
+            console.log(file, 6666);
+            console.log('====================================');
             var fileFormat = (file.originalname).split("."); //以点分割成数组，数组的最后一项就是后缀名
             cb(null, Date.now() + "." + fileFormat[fileFormat.length - 1]);
         }
@@ -107,7 +110,7 @@ app.use(async(ctx, next) => {
 app.use(jwtKoa({
     secret: defined.secret
 }).unless({
-    path: [/^\/login/, /^\/register/, /^\/captcha/]
+    path: [/^\/login/, /^\/register/, /^\/captcha/, , /^\/upload/]
 }));
 // router.prefix('/api')
 router.use("/login", login)
