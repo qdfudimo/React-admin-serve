@@ -6,6 +6,7 @@ const DB_URL = '47.103.218.151:27017'
 module.exports = new Promise((resolve, reject) => {
     /** 连接数据库
      * root是adminJs
+     * root:root 是账户密码
      */
     mongoose.connect(`mongodb://root:root@${DB_URL}/${DB_NAME}`, {
             useNewUrlParser: true
