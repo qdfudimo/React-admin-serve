@@ -18,15 +18,15 @@ var storage = multer.diskStorage({
     //加载配置
 var uploads = multer({ storage: storage });
 // router.prefix('/comic_admin_users') 生成路由前缀
-router.post('/', uploads.single('file'), async ctx => {
-    console.log(ctx.req.file, 999);
-    let { filename } = ctx.req.file
+//file 对应着客户端传过来的file
+router.post('/', uploads.array('file'), async ctx => {
+    console.log(ctx.req.files);
     ctx.body = {
         status: 200,
-        data: {
-            path: `/uploads/${filename}`,
-            filename
-        }
+        // data: {
+        //     path: `/uploads/${filename}`,
+        //     filename
+        // }
     }
 })
 module.exports = router.routes();
