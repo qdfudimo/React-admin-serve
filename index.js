@@ -89,6 +89,7 @@ app.use(async(ctx, next) => {
         }
     });
 });
+//以 login 开头的请求地址不使用 jwt 中间件
 app.use(jwtKoa({
     secret: defined.secret
 }).unless({
